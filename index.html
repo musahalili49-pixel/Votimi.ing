@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sistemi i Votimit</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#071a2f;
+    color:white;
+}
+
+header{
+    background:linear-gradient(135deg,#063b70,#087f9b,#08a98e);
+    padding:25px;
+    text-align:center;
+    box-shadow:0 4px 20px #0005;
+}
+
+header h1{
+    margin:0;
+    font-size:30px;
+}
+
+header p{
+    opacity:.85;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:25px;
+}
+
+.card{
+    background:#102b49;
+    border:1px solid #285477;
+    border-radius:20px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px #0003;
+}
+
+h2{
+    margin-top:0;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:14px;
+    margin:7px 0 15px;
+    border-radius:10px;
+    border:none;
+    font-size:16px;
+}
+
+button{
+    border:0;
+    border-radius:11px;
+    padding:13px 18px;
+    margin:4px;
+    cursor:pointer;
+    background:#0bb69f;
+    color:white;
+    font-weight:bold;
+    font-size:15px;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+.red{
+    background:#dc4545;
+}
+
+.blue{
+    background:#087be8;
+}
+
+.gray{
+    background:#53677a;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.status{
+    padding:15px;
+    border-radius:12px;
+    background:#0a213b;
+    margin-bottom:15px;
+}
+
+.open{
+    color:#32e6a1;
+    font-weight:bold;
+}
+
+.closed{
+    color:#ff7070;
+    font-weight:bold;
+}
+
+.result{
+    background:#0a213b;
+    border-radius:12px;
+    padding:15px;
+    margin:10px 0;
+}
+
+.bar{
+    height:13px;
+    background:#0bb69f;
+    border-radius:20px;
+    margin-top:8px;
+    transition:.4s;
+}
+
+.qrBox{
+    display:inline-block;
+    background:white;
+    color:#111;
+    padding:12px;
+    border-radius:12px;
+    margin:7px;
+    text-align:center;
+}
+
+.qrBox div{
+    margin-top:8px;
+}
+
+.hidden{
+    display:none;
+}
+
+.votePage{
+    position:fixed;
+    inset:0;
+    background:#edf4f8;
+    color:#10243d;
+    overflow:auto;
+    z-index:100;
+}
+
+.voteBox{
+    max-width:600px;
+    margin:50px auto;
+    background:white;
+    padding:30px;
+    border-radius:22px;
+    box-shadow:0 10px 40px #0003;
+}
+
+.voteButton{
+    display:block;
+    width:100%;
+    margin:12px 0;
+    padding:18px;
+    background:#087be8;
+    color:white;
+    border:none;
+    border-radius:13px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.success{
+    color:#11874d;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.error{
+    color:#c83232;
+    font-weight:bold;
+}
+
+.small{
+    color:#a9bdcf;
+    font-size:13px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td,th{
+    padding:10px;
+    border-bottom:1px solid #31516e;
+    text-align:left;
+}
+
+@media(max-width:750px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .container{
+        padding:12px;
+    }
+
+    .voteBox{
+        margin:15px;
+    }
+
+}
+
+@media print{
+
+    body{
+        background:white;
+    }
+
+    header,
+    .noPrint{
+        display:none;
+    }
+
+    .card{
+        box-shadow:none;
+        border:1px solid #ddd;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>🗳️ SISTEMI I VOTIMIT</h1>
+
+<p>
+Menaxhim i votimit dhe rezultateve
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- ADMIN -->
+
+<div id="adminPanel">
+
+<div class="card">
+
+<h2>⚙️ Krijo votimin</h2>
+
+<label>Titulli i votimit</label>
+
+<input
+id="electionTitle"
+value="Zgjedhjet"
+/>
+
+<label>Kandidatët</label>
+
+<textarea
+id="candidateInput"
+rows="6"
+placeholder="Një kandidat për rresht"
+>Kandidati 1
+Kandidati 2</textarea>
+
+<button onclick="createElection()">
+Krijo votimin
+</button>
+
+<button
+class="blue"
+onclick="openElection()">
+Hap votimin
+</button>
+
+<button
+class="red"
+onclick="closeElection()">
+Mbyll votimin
+</button>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h2>🔐 QR të votuesve</h2>
+
+<p class="small">
+
+Çdo QR ka një kod unik.
+
+Një kod mund të përdoret vetëm një herë.
+
+</p>
+
+<label>Numri i votuesve</label>
+
+<input
+id="qrCount"
+type="number"
+min="1"
+max="100"
+value="10"
+/>
+
+<button onclick="generateQRs()">
+Gjenero QR
+</button>
+
+<button
+class="gray"
+onclick="window.print()">
+🖨️ Printo QR
+</button>
+
+<div id="qrContainer"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📊 Gjendja</h2>
+
+<div id="status"
+class="status">
+Votimi nuk është krijuar.
+</div>
+
+<h3>Vota totale</h3>
+
+<div
+id="totalVotes"
+style="font-size:35px;font-weight:bold;">
+0
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📈 Rezultatet</h2>
+
+<div id="results">
+
+Nuk ka rezultate.
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>👥 Votuesit</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>QR</th>
+
+<th>Statusi</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="voterTable">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- VOTE PAGE -->
+
+<div
+id="votePage"
+class="votePage hidden">
+
+<div class="voteBox">
+
+<h1
+id="voteTitle">
+Votimi
+</h1>
+
+<p id="voteMessage">
+Zgjidh kandidatin.
+</p>
+
+<div
+id="candidateButtons">
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   TË DHËNAT
+========================= */
+
+let election = {
+
+    title:"Zgjedhjet",
+
+    active:false,
+
+    candidates:[]
+
+};
+
+let voters = {};
+
+let votes = {};
+
+
+/* =========================
+   RUATJA
+========================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "votingElection",
+        JSON.stringify(election)
+    );
+
+    localStorage.setItem(
+        "votingVoters",
+        JSON.stringify(voters)
+    );
+
+    localStorage.setItem(
+        "votingVotes",
+        JSON.stringify(votes)
+    );
+
+}
+
+
+function loadData(){
+
+    const e =
+        localStorage.getItem("votingElection");
+
+    const v =
+        localStorage.getItem("votingVoters");
+
+    const vo =
+        localStorage.getItem("votingVotes");
+
+
+    if(e)
+        election=JSON.parse(e);
+
+    if(v)
+        voters=JSON.parse(v);
+
+    if(vo)
+        votes=JSON.parse(vo);
+
+
+    updateScreen();
+
+}
+
+
+/* =========================
+   KRIJO VOTIMIN
+========================= */
+
+function createElection(){
+
+    const title =
+        document.getElementById(
+            "electionTitle"
+        ).value.trim();
+
+
+    const names =
+        document.getElementById(
+            "candidateInput"
+        ).value
+        .split("\n")
+        .map(x=>x.trim())
+        .filter(x=>x);
+
+
+    if(!title){
+
+        alert("Vendos titullin.");
+
+        return;
+
+    }
+
+
+    if(names.length < 2){
+
+        alert(
+            "Duhet të ketë të paktën 2 kandidatë."
+        );
+
+        return;
+
+    }
+
+
+    election = {
+
+        title:title,
+
+        active:false,
+
+        candidates:names.map(
+            name=>({
+
+                id:crypto.randomUUID(),
+
+                name:name
+
+            })
+        )
+
+    };
+
+
+    voters={};
+
+    votes={};
+
+
+    saveData();
+
+    updateScreen();
+
+
+    alert(
+        "Votimi u krijua me sukses."
+    );
+
+}
+
+
+/* =========================
+   HAP
+========================= */
+
+function openElection(){
+
+    if(election.candidates.length<2){
+
+        alert(
+            "Krijo fillimisht votimin."
+        );
+
+        return;
+
+    }
+
+
+    election.active=true;
+
+    saveData();
+
+    updateScreen();
+
+}
+
+
+/* =========================
+   MBYLL
+========================= */
+
+function closeElection(){
+
+    election.active=false;
+
+    saveData();
+
+    updateScreen();
+
+}
+
+
+/* =========================
+   QR
+========================= */
+
+function generateQRs(){
+
+    if(election.candidates.length<2){
+
+        alert(
+            "Krijo votimin fillimisht."
+        );
+
+        return;
+
+    }
+
+
+    const count =
+        Number(
+            document.getElementById(
+                "qrCount"
+            ).value
+        );
+
+
+    if(count<1 || count>100){
+
+        alert(
+            "Numri duhet të jetë 1 deri 100."
+        );
+
+        return;
+
+    }
+
+
+    voters={};
+
+
+    const container =
+        document.getElementById(
+            "qrContainer"
+        );
+
+    container.innerHTML="";
+
+
+    for(let i=1;i<=count;i++){
+
+        const token =
+            crypto.randomUUID()
+            .replaceAll("-","");
+
+
+        voters[token]={
+
+            number:i,
+
+            used:false
+
+        };
+
+
+        const box =
+            document.createElement(
+                "div"
+            );
+
+        box.className="qrBox";
+
+
+        const label =
+            document.createElement(
+                "b"
+            );
+
+        label.innerText =
+            "Votuesi "+i;
+
+
+        const qr =
+            document.createElement(
+                "div"
+            );
+
+
+        box.appendChild(label);
+
+        box.appendChild(qr);
+
+        container.appendChild(box);
+
+
+        /*
+        Në prototipin lokal QR
+        hap faqen e votimit me token.
+        */
+
+        const url =
+            location.href
+            .split("?")[0]
+            +
+            "?vote="
+            +
+            token;
+
+
+        new QRCode(qr,{
+
+            text:url,
+
+            width:140,
+
+            height:140
+
+        });
+
+    }
+
+
+    saveData();
+
+    updateScreen();
+
+
+    alert(
+        count+
+        " QR u krijuan."
+    );
+
+}
+
+
+/* =========================
+   VOTIMI
+========================= */
+
+function openVote(token){
+
+    if(!election.active){
+
+        alert(
+            "Votimi është i mbyllur."
+        );
+
+        return;
+
+    }
+
+
+    if(!voters[token]){
+
+        alert(
+            "QR nuk është i vlefshëm."
+        );
+
+        return;
+
+    }
+
+
+    if(voters[token].used){
+
+        alert(
+            "Ky QR është përdorur më parë."
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "adminPanel"
+        )
+        .classList
+        .add("hidden");
+
+
+    document
+        .getElementById(
+            "votePage"
+        )
+        .classList
+        .remove("hidden");
+
+
+    document
+        .getElementById(
+            "voteTitle"
+        )
+        .innerText =
+        election.title;
+
+
+    const area =
+        document.getElementById(
+            "candidateButtons"
+        );
+
+
+    area.innerHTML="";
+
+
+    document
+        .getElementById(
+            "voteMessage"
+        )
+        .innerText =
+        "Zgjidh një kandidat:";
+
+
+    election.candidates
+        .forEach(candidate=>{
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "voteButton";
+
+
+            button.innerText =
+                candidate.name;
+
+
+            button.onclick =
+                ()=>confirmVote(
+                    token,
+                    candidate.id
+                );
+
+
+            area.appendChild(
+                button
+            );
+
+        });
+
+}
+
+
+/* =========================
+   KONFIRMO
+========================= */
+
+function confirmVote(
+    token,
+    candidateId
+){
+
+    const candidate =
+        election.candidates
+        .find(
+            x=>x.id===candidateId
+        );
+
+
+    if(!candidate)
+        return;
+
+
+    const yes =
+        confirm(
+            "A dëshiron ta votosh:\n\n"+
+            candidate.name+
+            "\n\nVota nuk mund të ndryshohet."
+        );
+
+
+    if(!yes)
+        return;
+
+
+    voters[token].used=true;
+
+
+    votes[token]=candidateId;
+
+
+    saveData();
+
+
+    document
+        .getElementById(
+            "candidateButtons"
+        )
+        .innerHTML="";
+
+
+    document
+        .getElementById(
+            "voteMessage"
+        )
+        .className=
+        "success";
+
+
+    document
+        .getElementById(
+            "voteMessage"
+        )
+        .innerText=
+        "✓ Vota u regjistrua me sukses.";
+
+
+    setTimeout(()=>{
+
+        document
+            .getElementById(
+                "votePage"
+            )
+            .classList
+            .add("hidden");
+
+
+        document
+            .getElementById(
+                "adminPanel"
+            )
+            .classList
+            .remove("hidden");
+
+
+        updateScreen();
+
+    },1500);
+
+}
+
+
+/* =========================
+   REZULTATET
+========================= */
+
+function calculateResults(){
+
+    const results={};
+
+
+    election.candidates
+        .forEach(c=>{
+
+            results[c.id]=0;
+
+        });
+
+
+    Object.values(votes)
+        .forEach(candidateId=>{
+
+            if(
+                results[candidateId]
+                !==undefined
+            ){
+
+                results[candidateId]++;
+
+            }
+
+        });
+
+
+    return results;
+
+}
+
+
+/* =========================
+   EKRANI
+========================= */
+
+function updateScreen(){
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    if(election.active){
+
+        status.innerHTML=
+        `<span class="open">
+        🟢 VOTIMI ËSHTË I HAPUR
+        </span>`;
+
+    }else{
+
+        status.innerHTML=
+        `<span class="closed">
+        🔴 VOTIMI ËSHTË I MBYLLUR
+        </span>`;
+
+    }
+
+
+    const results =
+        calculateResults();
+
+
+    const total =
+        Object.values(results)
+        .reduce(
+            (a,b)=>a+b,
+            0
+        );
+
+
+    document
+        .getElementById(
+            "totalVotes"
+        )
+        .innerText=total;
+
+
+    const area =
+        document.getElementById(
+            "results"
+        );
+
+
+    if(!election.candidates.length){
+
+        area.innerText=
+        "Nuk ka rezultate.";
+
+        return;
+
+    }
+
+
+    const max =
+        Math.max(
+            1,
+            ...Object.values(results)
+        );
+
+
+    area.innerHTML="";
+
+
+    election.candidates
+        .forEach(c=>{
+
+            const number =
+                results[c.id]||0;
+
+
+            const percent =
+                total===0
+                ?0
+                :(number/total)*100;
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className=
+                "result";
+
+
+            div.innerHTML=`
+
+                <b>
+                    ${c.name}
+                </b>
+
+                <span style="float:right">
+                    ${number} vota
+                    (${percent.toFixed(1)}%)
+                </span>
+
+                <div
+                class="bar"
+                style="
+                width:${(number/max)*100}%;
+                ">
+                </div>
+
+            `;
+
+
+            area.appendChild(div);
+
+        });
+
+
+    updateVoterTable();
+
+}
+
+
+/* =========================
+   TABELA
+========================= */
+
+function updateVoterTable(){
+
+    const table =
+        document.getElementById(
+            "voterTable"
+        );
+
+
+    table.innerHTML="";
+
+
+    const entries =
+        Object.entries(
+            voters
+        );
+
+
+    entries.forEach(
+        ([token,data])=>{
+
+            const tr =
+                document.createElement(
+                    "tr"
+                );
+
+
+            tr.innerHTML=`
+
+                <td>
+                    ${data.number}
+                </td>
+
+                <td>
+                    ${token.substring(0,8)}...
+                </td>
+
+                <td>
+                    ${
+                    data.used
+                    ?"✅ E përdorur"
+                    :"🟢 E lirë"
+                    }
+                </td>
+
+            `;
+
+
+            table.appendChild(tr);
+
+        }
+    );
+
+}
+
+
+/* =========================
+   QR NGA URL
+========================= */
+
+function checkQR(){
+
+    const params =
+        new URLSearchParams(
+            location.search
+        );
+
+
+    const token =
+        params.get("vote");
+
+
+    if(token){
+
+        openVote(token);
+
+    }
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadData();
+
+checkQR();
+
+</script>
+
+</body>
+</html>
