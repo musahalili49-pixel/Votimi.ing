@@ -3,1219 +3,2254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Sistemi i Votimit</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<meta name="theme-color" content="#102b52">
+<title>test.ing | Studio profesionale e testeve</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
+:root {
+  --navy: #102b52;
+  --blue: #1e5aa8;
+  --blue2: #eaf2ff;
+  --gold: #ffc928;
+  --ink: #18263b;
+  --muted: #65748b;
+  --line: #dbe3ee;
+  --bg: #f3f6fb;
+  --green: #18794e;
+  --red: #b42318;
 }
 
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#071a2f;
-    color:white;
+* {
+  box-sizing: border-box;
 }
 
-header{
-    background:linear-gradient(135deg,#063b70,#087f9b,#08a98e);
-    padding:25px;
-    text-align:center;
-    box-shadow:0 4px 20px #0005;
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: Arial, sans-serif;
+  color: var(--ink);
 }
 
-header h1{
-    margin:0;
-    font-size:30px;
+button, input, select, textarea {
+  font: inherit;
 }
 
-header p{
-    opacity:.85;
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 15px;
+  font-weight: bold;
+  background: var(--blue);
+  color: white;
 }
 
-.container{
-    max-width:1100px;
-    margin:auto;
-    padding:25px;
+button.secondary {
+  background: #e8eef8;
+  color: var(--navy);
 }
 
-.card{
-    background:#102b49;
-    border:1px solid #285477;
-    border-radius:20px;
-    padding:22px;
-    margin-bottom:20px;
-    box-shadow:0 10px 30px #0003;
+button.gold {
+  background: var(--gold);
+  color: var(--navy);
 }
 
-h2{
-    margin-top:0;
+button.red {
+  background: #ffebe9;
+  color: var(--red);
 }
 
-input,
-textarea,
-select{
-    width:100%;
-    padding:14px;
-    margin:7px 0 15px;
-    border-radius:10px;
-    border:none;
-    font-size:16px;
+header {
+  background: linear-gradient(120deg, #0d2343, #174b8b);
+  color: white;
+  padding: 22px;
+  border-bottom: 5px solid var(--gold);
 }
 
-button{
-    border:0;
-    border-radius:11px;
-    padding:13px 18px;
-    margin:4px;
-    cursor:pointer;
-    background:#0bb69f;
-    color:white;
-    font-weight:bold;
-    font-size:15px;
+.top {
+  max-width: 1260px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-button:hover{
-    opacity:.85;
+.brandmark {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: var(--gold);
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  font-weight: 900;
 }
 
-.red{
-    background:#dc4545;
+.brand h1 {
+  font-size: 27px;
+  margin: 0;
 }
 
-.blue{
-    background:#087be8;
+.brand p {
+  margin: 5px 0 0;
+  color: #d9e7fb;
+  font-size: 13px;
 }
 
-.gray{
-    background:#53677a;
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
+.header-actions button {
+  background: #ffffff20;
+  border: 1px solid #ffffff45;
 }
 
-.status{
-    padding:15px;
-    border-radius:12px;
-    background:#0a213b;
-    margin-bottom:15px;
+main {
+  max-width: 1260px;
+  margin: 22px auto;
+  padding: 0 18px;
 }
 
-.open{
-    color:#32e6a1;
-    font-weight:bold;
+.layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
 }
 
-.closed{
-    color:#ff7070;
-    font-weight:bold;
+.sidebar {
+  position: sticky;
+  top: 15px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 12px;
 }
 
-.result{
-    background:#0a213b;
-    border-radius:12px;
-    padding:15px;
-    margin:10px 0;
+.side-title {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--muted);
+  padding: 10px;
 }
 
-.bar{
-    height:13px;
-    background:#0bb69f;
-    border-radius:20px;
-    margin-top:8px;
-    transition:.4s;
+.navbtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: transparent;
+  color: #33445d;
+  margin: 3px 0;
 }
 
-.qrBox{
-    display:inline-block;
-    background:white;
-    color:#111;
-    padding:12px;
-    border-radius:12px;
-    margin:7px;
-    text-align:center;
+.navbtn.active {
+  background: var(--blue2);
+  color: var(--blue);
 }
 
-.qrBox div{
-    margin-top:8px;
+.navbtn span:first-child {
+  width: 24px;
+  text-align: center;
 }
 
-.hidden{
-    display:none;
+.side-note {
+  border-top: 1px solid var(--line);
+  margin-top: 12px;
+  padding: 13px 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
-.votePage{
-    position:fixed;
-    inset:0;
-    background:#edf4f8;
-    color:#10243d;
-    overflow:auto;
-    z-index:100;
+.content {
+  min-width: 0;
 }
 
-.voteBox{
-    max-width:600px;
-    margin:50px auto;
-    background:white;
-    padding:30px;
-    border-radius:22px;
-    box-shadow:0 10px 40px #0003;
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
 }
 
-.voteButton{
-    display:block;
-    width:100%;
-    margin:12px 0;
-    padding:18px;
-    background:#087be8;
-    color:white;
-    border:none;
-    border-radius:13px;
-    font-size:18px;
-    font-weight:bold;
+.welcome h2 {
+  margin: 0;
+  font-size: 25px;
 }
 
-.success{
-    color:#11874d;
-    font-weight:bold;
-    font-size:20px;
+.welcome p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
 }
 
-.error{
-    color:#c83232;
-    font-weight:bold;
+.badge {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 30px;
+  background: #e2f7eb;
+  color: #14643f;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-.small{
-    color:#a9bdcf;
-    font-size:13px;
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px #18355b08;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+.panel h3 {
+  margin-top: 0;
 }
 
-td,th{
-    padding:10px;
-    border-bottom:1px solid #31516e;
-    text-align:left;
+.panel-description {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-@media(max-width:750px){
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-
-    .container{
-        padding:12px;
-    }
-
-    .voteBox{
-        margin:15px;
-    }
-
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
 }
 
-@media print{
-
-    body{
-        background:white;
-    }
-
-    header,
-    .noPrint{
-        display:none;
-    }
-
-    .card{
-        box-shadow:none;
-        border:1px solid #ddd;
-    }
-
+.grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.field {
+  min-width: 0;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  color: #34455e;
+  margin-bottom: 7px;
+}
+
+.field input,
+.field select,
+.field textarea,
+.q-body input,
+.q-body select,
+.q-body textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #cfd9e6;
+  border-radius: 9px;
+  background: white;
+  color: var(--ink);
+}
+
+textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 6px;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 20px 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.row.between {
+  justify-content: space-between;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.statrow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat {
+  padding: 15px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.stat b {
+  display: block;
+  font-size: 22px;
+  color: var(--navy);
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.q-list {
+  display: grid;
+  gap: 13px;
+}
+
+.q-editor {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+}
+
+.q-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #f7f9fd;
+  border-bottom: 1px solid var(--line);
+  padding: 12px;
+}
+
+.q-num {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--blue2);
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.q-top strong {
+  flex: 1;
+}
+
+.q-body {
+  padding: 15px;
+}
+
+.q-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.option-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-input b {
+  color: var(--blue);
+}
+
+.option-input input {
+  min-width: 0;
+}
+
+.dropzone {
+  border: 1px dashed #9bb3d3;
+  background: #f8fbff;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+}
+
+.dropzone p {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.preview-wrap {
+  background: #e9eef5;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.paper-preview {
+  background: white;
+  max-width: 780px;
+  margin: auto;
+  padding: 30px;
+  box-shadow: 0 3px 15px #102b5215;
+  min-height: 300px;
+}
+
+.empty {
+  padding: 30px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.scorebox {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 13px;
+}
+
+.scorebox span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.scorebox b {
+  display: block;
+  font-size: 21px;
+  margin-top: 5px;
+}
+
+.thumb {
+  width: 112px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 5px;
+}
+
+.thumb img {
+  width: 100%;
+  height: 80px;
+  object-fit: contain;
+}
+
+.thumb button {
+  width: 100%;
+  margin-top: 5px;
+}
+
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: #142b4c;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: none;
+  max-width: 90vw;
+}
+
+.camera-modal {
+  position: fixed;
+  inset: 0;
+  background: #07172bd9;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.camera-modal.open {
+  display: flex;
+}
+
+.camera-box {
+  background: white;
+  width: min(620px, 100%);
+  border-radius: 15px;
+  padding: 18px;
+}
+
+.camera-box video {
+  display: block;
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  background: #101820;
+  border-radius: 10px;
+  margin: 12px 0;
+}
+
+.camera-status {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.square-choice {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #111;
+  border-radius: 2px;
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+.print-only {
+  display: none;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 20px;
+}
+
+@media(max-width:900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+  }
+
+  .side-title,
+  .side-note {
+    display: none;
+  }
+
+  .navbtn {
+    width: auto;
+    white-space: nowrap;
+  }
+}
+
+@media(max-width:600px) {
+  .grid,
+  .grid.three,
+  .statrow,
+  .score-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .q-options {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .paper-preview {
+    padding: 15px;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 14mm 13mm;
+}
+
+@media print {
+  body {
+    background: white !important;
+    color: #111 !important;
+  }
+
+  header,
+  main,
+  footer,
+  #toast,
+  .camera-modal {
+    display: none !important;
+  }
+
+  #printRoot {
+    display: block !important;
+  }
+
+  .print-page {
+    display: block;
+    page-break-after: always;
+    break-after: page;
+    min-height: 267mm;
+    font-size: 11pt;
+  }
+
+  .print-page:last-child {
+    page-break-after: auto;
+  }
+
+  .exam-head {
+    text-align: center;
+    border-bottom: 2px solid #111;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .exam-head h1 {
+    font-size: 17pt;
+    margin: 0 0 5px;
+  }
+
+  .exam-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px 15px;
+    text-align: left;
+    font-size: 10pt;
+    margin-top: 12px;
+  }
+
+  .student-line {
+    border-bottom: 1px solid #333;
+    display: inline-block;
+    min-width: 150px;
+    height: 18px;
+  }
+
+  .exam-instructions {
+    border: 1px solid #777;
+    padding: 8px;
+    margin: 10px 0;
+    font-size: 10pt;
+  }
+
+  .print-question {
+    margin: 12px 0 14px;
+    break-inside: avoid;
+  }
+
+  .print-question-title {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .print-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 15px;
+    margin: 5px 0 0 15px;
+  }
+
+  .answer-lines {
+    height: 62px;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 23px,
+      #bbb 24px,
+      #bbb 25px
+    );
+  }
+
+  .answer-lines.short {
+    height: 35px;
+  }
+
+  .print-image {
+    max-width: 65%;
+    max-height: 130px;
+    object-fit: contain;
+    display: block;
+    margin: 8px 0;
+  }
+
+  .points {
+    float: right;
+    font-size: 9pt;
+    font-weight: normal;
+  }
+
+  .bubble-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 10pt;
+  }
+
+  .bubble-table th,
+  .bubble-table td {
+    border: 1px solid #555;
+    padding: 5px;
+    text-align: center;
+  }
+
+  .bubble {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid #111;
+    border-radius: 50%;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <header>
+  <div class="top">
+    <div class="brandmark">t.</div>
 
-<h1>🗳️ SISTEMI I VOTIMIT</h1>
+    <div class="brand">
+      <div>
+        <h1>test.ing</h1>
+        <p>Studio profesionale për krijimin e testeve</p>
+      </div>
+    </div>
 
-<p>
-Menaxhim i votimit dhe rezultateve
-</p>
-
+    <div class="header-actions">
+      <button onclick="saveProject()">💾 Ruaj projektin</button>
+      <button onclick="document.getElementById('openProject').click()">📂 Hap projektin</button>
+      <button class="gold" onclick="printTest()">🖨️ Printo testin</button>
+      <input type="file" id="openProject" accept=".json,application/json" hidden>
+    </div>
+  </div>
 </header>
 
-<div class="container">
+<main>
+  <div class="layout">
 
-<!-- ADMIN -->
+    <aside class="sidebar">
+      <div class="side-title">KRIJIMI I TESTIT</div>
 
-<div id="adminPanel">
+      <button class="navbtn active" data-section="details">
+        <span>📝</span> Të dhënat
+      </button>
 
-<div class="card">
+      <button class="navbtn" data-section="questions">
+        <span>📚</span> Pyetjet
+      </button>
 
-<h2>⚙️ Krijo votimin</h2>
+      <button class="navbtn" data-section="photos">
+        <span>📷</span> Fotografitë
+      </button>
 
-<label>Titulli i votimit</label>
+      <button class="navbtn" data-section="grades">
+        <span>📊</span> Pikët dhe notat
+      </button>
 
-<input
-id="electionTitle"
-value="Zgjedhjet"
-/>
+      <button class="navbtn" data-section="preview">
+        <span>📄</span> Pamja e printimit
+      </button>
 
-<label>Kandidatët</label>
+      <button class="navbtn" data-section="sharing">
+        <span>🔗</span> QR dhe shpërndarja
+      </button>
 
-<textarea
-id="candidateInput"
-rows="6"
-placeholder="Një kandidat për rresht"
->Kandidati 1
-Kandidati 2</textarea>
+      <div class="side-note">
+        Krijo testin, organizo pyetjet, shto fotografi dhe përgatite për printim në formatin A4.
+      </div>
+    </aside>
 
-<button onclick="createElection()">
-Krijo votimin
-</button>
+    <div class="content">
 
-<button
-class="blue"
-onclick="openElection()">
-Hap votimin
-</button>
+      <div class="welcome">
+        <div>
+          <h2>Studio e testeve</h2>
+          <p>Krijo, organizo dhe printo testet nga një faqe e vetme.</p>
+        </div>
+        <span class="badge">● Gati për punë</span>
+      </div>
 
-<button
-class="red"
-onclick="closeElection()">
-Mbyll votimin
-</button>
+      <div class="statrow">
+        <div class="stat">
+          <b id="statQuestions">0</b>
+          <span>Pyetje të krijuara</span>
+        </div>
 
+        <div class="stat">
+          <b id="statPoints">0</b>
+          <span>Pikë gjithsej</span>
+        </div>
+
+        <div class="stat">
+          <b id="statPhotos">0</b>
+          <span>Fotografi të shtuara</span>
+        </div>
+      </div>
+
+      <section id="section-details" class="app-section">
+
+        <div class="panel">
+          <div class="eyebrow">HAPI 1</div>
+          <h3>Të dhënat e testit</h3>
+          <p class="panel-description">
+            Plotëso të dhënat që do të paraqiten në krye të testit të printuar.
+          </p>
+
+          <div class="grid">
+            <div class="field full">
+              <label for="testTitle">Titulli i testit</label>
+              <input id="testTitle" placeholder="P.sh. Test nga periudha e parë">
+            </div>
+
+            <div class="field">
+              <label for="subject">Lënda</label>
+              <input id="subject" placeholder="P.sh. Matematikë">
+            </div>
+
+            <div class="field">
+              <label for="className">Klasa</label>
+              <input id="className" placeholder="P.sh. VII/3">
+            </div>
+
+            <div class="field">
+              <label for="school">Shkolla</label>
+              <input id="school" placeholder="Emri i shkollës">
+            </div>
+
+            <div class="field">
+              <label for="teacher">Mësimdhënësi</label>
+              <input id="teacher" placeholder="Emri dhe mbiemri">
+            </div>
+
+            <div class="field">
+              <label for="testDate">Data</label>
+              <input id="testDate" type="date">
+            </div>
+
+            <div class="field">
+              <label for="duration">Kohëzgjatja</label>
+              <select id="duration">
+                <option value="20 minuta">20 minuta</option>
+                <option value="30 minuta">30 minuta</option>
+                <option value="45 minuta" selected>45 minuta</option>
+                <option value="60 minuta">60 minuta</option>
+                <option value="90 minuta">90 minuta</option>
+                <option value="120 minuta">120 minuta</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="testKind">Lloji i testit</label>
+              <select id="testKind">
+                <option>Test i zakonshëm</option>
+                <option>Test kontrollues</option>
+                <option>Test përmbledhës</option>
+                <option>Provimi përfundimtar</option>
+                <option>Test praktik</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="difficulty">Niveli i vështirësisë</label>
+              <select id="difficulty">
+                <option>Fillestar</option>
+                <option selected>Mesatar</option>
+                <option>I avancuar</option>
+                <option>I përzier</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="layoutType">Formati i testit</label>
+              <select id="layoutType">
+                <option value="ordinary">Test i zakonshëm</option>
+                <option value="matura">Format i maturës me fletë përgjigjesh</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="optionCount">Alternativat për pyetjet me zgjedhje</label>
+              <select id="optionCount">
+                <option value="2">2 alternativa</option>
+                <option value="3">3 alternativa</option>
+                <option value="4" selected>4 alternativa</option>
+                <option value="5">5 alternativa</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="questionCount">Numri fillestar i pyetjeve</label>
+              <input id="questionCount" type="number" min="1" max="100" value="5">
+            </div>
+
+            <div class="field full">
+              <label for="topics">Temat që përfshin testi</label>
+              <textarea id="topics" placeholder="Shkruaj temat e përfshira në test..."></textarea>
+            </div>
+
+            <div class="field full">
+              <label for="instructions">Udhëzimet për nxënësit</label>
+              <textarea id="instructions">Lexoni me kujdes pyetjet. Shkruani qartë përgjigjet dhe kontrolloni punën para dorëzimit.</textarea>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <div class="toggle-row">
+            <input type="checkbox" id="finalTest">
+            <label for="finalTest">Shënoje si test përfundimtar</label>
+          </div>
+
+          <div class="row" style="margin-top:18px">
+            <button onclick="goSection('questions')">Vazhdo te pyetjet →</button>
+          </div>
+        </div>
+
+      </section>      <section id="section-questions" class="app-section hidden">
+
+        <div class="panel">
+          <div class="eyebrow">HAPI 2</div>
+          <h3>Ndërtuesi i pyetjeve</h3>
+          <p class="panel-description">
+            Shto pyetje me alternativa, përgjigje të hapura, plotësim dhe e vërtetë/e gabuar.
+          </p>
+
+          <div class="row">
+            <button onclick="addQuestion('choice')">＋ Pyetje me alternativa</button>
+            <button class="secondary" onclick="addQuestion('open')">＋ Përgjigje e hapur</button>
+            <button class="secondary" onclick="addQuestion('blank')">＋ Plotëso boshllëkun</button>
+            <button class="secondary" onclick="addQuestion('tf')">＋ E vërtetë / E gabuar</button>
+          </div>
+
+          <hr class="divider">
+
+          <div class="row between">
+            <div>
+              <strong>Pyetjet e testit</strong>
+              <p class="hint">Shëno pikët dhe çelësin e përgjigjeve për secilën pyetje.</p>
+            </div>
+            <button class="gold" onclick="generateQuestions()">⚡ Krijo pyetje shembull</button>
+          </div>
+
+          <div id="questionList" class="q-list" style="margin-top:16px"></div>
+
+          <div class="row" style="margin-top:18px">
+            <button onclick="goSection('photos')">Vazhdo te fotografitë →</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="section-photos" class="app-section hidden">
+
+        <div class="panel">
+          <div class="eyebrow">HAPI 3</div>
+          <h3>Fotografitë dhe materialet</h3>
+          <p class="panel-description">
+            Shto fotografi nga kompjuteri, galeria ose kamera e pajisjes.
+          </p>
+
+          <div class="dropzone">
+            <strong>📷 Shto fotografi në test</strong>
+            <p>Fotografitë mund të përdoren për figura, harta, diagrame dhe ushtrime.</p>
+
+            <div class="row" style="justify-content:center">
+              <button onclick="openCamera()">📸 Hap kamerën live</button>
+              <button class="secondary" onclick="document.getElementById('generalPhotoInput').click()">🖼️ Zgjidh fotografi</button>
+            </div>
+
+            <input id="generalPhotoInput" type="file" accept="image/*" multiple hidden>
+          </div>
+
+          <div id="generalPhotos" class="row" style="margin-top:15px"></div>
+
+          <hr class="divider">
+
+          <h3>Fotografitë e pyetjeve</h3>
+          <p class="hint">
+            Për të shtuar fotografi në një pyetje të caktuar, përdor butonat brenda kartelës së asaj pyetjeje.
+          </p>
+
+          <div class="row" style="margin-top:16px">
+            <button class="secondary" onclick="goSection('questions')">← Kthehu te pyetjet</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="section-grades" class="app-section hidden">
+
+        <div class="panel">
+          <div class="eyebrow">HAPI 4</div>
+          <h3>Pikët dhe llogaritja e notave</h3>
+          <p class="panel-description">
+            Shiko pikët maksimale të testit dhe llogarit notën sipas pragjeve që cakton.
+          </p>
+
+          <div class="score-grid">
+            <div class="scorebox">
+              <span>Numri i pyetjeve</span>
+              <b id="gradeQuestions">0</b>
+            </div>
+
+            <div class="scorebox">
+              <span>Pikët maksimale</span>
+              <b id="gradeTotal">0</b>
+            </div>
+
+            <div class="scorebox">
+              <span>Pikët e fituara</span>
+              <b id="gradeEarned">—</b>
+            </div>
+
+            <div class="scorebox">
+              <span>Nota e llogaritur</span>
+              <b id="gradeResult">—</b>
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3>Pragjet e notave</h3>
+
+          <div class="grid three">
+            <div class="field">
+              <label for="grade2">Nota 2 – minimumi (%)</label>
+              <input id="grade2" type="number" min="0" max="100" value="40">
+            </div>
+
+            <div class="field">
+              <label for="grade3">Nota 3 – minimumi (%)</label>
+              <input id="grade3" type="number" min="0" max="100" value="55">
+            </div>
+
+            <div class="field">
+              <label for="grade4">Nota 4 – minimumi (%)</label>
+              <input id="grade4" type="number" min="0" max="100" value="70">
+            </div>
+
+            <div class="field">
+              <label for="grade5">Nota 5 – minimumi (%)</label>
+              <input id="grade5" type="number" min="0" max="100" value="85">
+            </div>
+          </div>
+
+          <hr class="divider">
+
+          <h3>Provo llogaritjen</h3>
+
+          <div class="grid">
+            <div class="field">
+              <label for="earnedPoints">Pikët e nxënësit</label>
+              <input id="earnedPoints" type="number" min="0" value="0">
+            </div>
+
+            <div class="field">
+              <label>Rezultati</label>
+              <div class="scorebox">
+                <b id="gradeCalculation">—</b>
+                <span id="gradePercent">Vendos pikët e fituara.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:18px">
+            <button onclick="calculateGrade()">Llogarit notën</button>
+            <button class="secondary" onclick="updateStats()">Përditëso pikët e testit</button>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="section-preview" class="app-section hidden">
+
+        <div class="panel">
+          <div class="eyebrow">HAPI 5</div>
+          <h3>Pamja e testit para printimit</h3>
+          <p class="panel-description">
+            Kontrollo të dhënat dhe pyetjet para se ta printosh testin në letër A4.
+          </p>
+
+          <div class="row">
+            <button onclick="refreshPreview()">🔄 Përditëso pamjen</button>
+            <button class="gold" onclick="printTest()">🖨️ Printo / Ruaj si PDF</button>
+          </div>
+
+          <hr class="divider">
+
+          <div class="preview-wrap">
+            <div id="previewContent" class="paper-preview">
+              <div class="empty">Kliko “Përditëso pamjen” për të parë testin.</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="section-sharing" class="app-section hidden">
+
+        <div class="panel">
+          <div class="eyebrow">HAPI 6</div>
+          <h3>QR dhe shpërndarja</h3>
+          <p class="panel-description">
+            Gjenero një QR që hap adresën e faqes tënde të publikuar.
+          </p>
+
+          <div class="field">
+            <label for="shareUrl">Adresa e faqes (URL)</label>
+            <input id="shareUrl" type="url" placeholder="https://emriyt.github.io/test.ing/">
+            <p class="hint">
+              Përdor adresën HTTPS të publikuar në GitHub Pages. Adresa lokale e kompjuterit nuk hapet në telefon.
+            </p>
+          </div>
+
+          <div class="row" style="margin-top:15px">
+            <button onclick="generateQR()">Gjenero QR</button>
+            <button class="secondary" onclick="copyShareUrl()">Kopjo adresën</button>
+          </div>
+
+          <div id="qrArea" style="margin-top:20px;text-align:center"></div>
+
+          <hr class="divider">
+
+          <h3>Ruajtja dhe eksportimi</h3>
+
+          <div class="row">
+            <button onclick="saveProject()">💾 Ruaj projektin JSON</button>
+            <button class="secondary" onclick="exportText()">📄 Eksporto testin si TXT</button>
+            <button class="secondary" onclick="printTest()">🖨️ Printo / PDF</button>
+          </div>
+
+          <p class="hint">
+            Projekti JSON shërben për ta ruajtur dhe hapur përsëri punën. QR-ja e faqes nuk e publikon vetë testin dhe nuk e ruan automatikisht në internet.
+          </p>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  test.ing · Studio për krijimin dhe organizimin e testeve
+</footer>
+
+<div id="toast"></div>
+
+<div id="cameraModal" class="camera-modal">
+  <div class="camera-box">
+    <h3>📸 Kamera live</h3>
+    <p id="cameraStatus" class="camera-status">
+      Lejo përdorimin e kamerës kur të kërkohet nga shfletuesi.
+    </p>
+
+    <video id="cameraVideo" autoplay playsinline></video>
+    <canvas id="cameraCanvas" hidden></canvas>
+
+    <div class="row">
+      <button onclick="captureLivePhoto()">📷 Bëj fotografinë</button>
+      <button class="secondary" onclick="switchCamera()">🔄 Ndërro kamerën</button>
+      <button class="red" onclick="closeCamera()">Mbyll kamerën</button>
+    </div>
+  </div>
 </div>
 
-
-<div class="grid">
-
-<div class="card">
-
-<h2>🔐 QR të votuesve</h2>
-
-<p class="small">
-
-Çdo QR ka një kod unik.
-
-Një kod mund të përdoret vetëm një herë.
-
-</p>
-
-<label>Numri i votuesve</label>
-
-<input
-id="qrCount"
-type="number"
-min="1"
-max="100"
-value="10"
-/>
-
-<button onclick="generateQRs()">
-Gjenero QR
-</button>
-
-<button
-class="gray"
-onclick="window.print()">
-🖨️ Printo QR
-</button>
-
-<div id="qrContainer"></div>
-
-</div>
-
-
-<div class="card">
-
-<h2>📊 Gjendja</h2>
-
-<div id="status"
-class="status">
-Votimi nuk është krijuar.
-</div>
-
-<h3>Vota totale</h3>
-
-<div
-id="totalVotes"
-style="font-size:35px;font-weight:bold;">
-0
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>📈 Rezultatet</h2>
-
-<div id="results">
-
-Nuk ka rezultate.
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>👥 Votuesit</h2>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>#</th>
-
-<th>QR</th>
-
-<th>Statusi</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="voterTable">
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-
-<!-- VOTE PAGE -->
-
-<div
-id="votePage"
-class="votePage hidden">
-
-<div class="voteBox">
-
-<h1
-id="voteTitle">
-Votimi
-</h1>
-
-<p id="voteMessage">
-Zgjidh kandidatin.
-</p>
-
-<div
-id="candidateButtons">
-</div>
-
-</div>
-
-</div>
-
-
+<div id="printRoot" class="print-only"></div>
 <script>
+"use strict";
 
-/* =========================
-   TË DHËNAT
-========================= */
+const $ = id => document.getElementById(id);
+const letters = ["A", "B", "C", "D", "E"];
+let questionCounter = 0;
+let generalPhotos = [];
+let cameraStream = null;
+let cameraFacing = "environment";
+let cameraTarget = null;
 
-let election = {
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
 
-    title:"Zgjedhjet",
+function toast(message) {
+  const box = $("toast");
+  box.textContent = message;
+  box.style.display = "block";
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => {
+    box.style.display = "none";
+  }, 3000);
+}
 
-    active:false,
+function goSection(name) {
+  document.querySelectorAll(".app-section").forEach(section => {
+    section.classList.add("hidden");
+  });
 
-    candidates:[]
+  const target = $("section-" + name);
+  if (target) target.classList.remove("hidden");
 
-};
-
-let voters = {};
-
-let votes = {};
-
-
-/* =========================
-   RUATJA
-========================= */
-
-function saveData(){
-
-    localStorage.setItem(
-        "votingElection",
-        JSON.stringify(election)
+  document.querySelectorAll(".navbtn").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.section === name
     );
+  });
 
-    localStorage.setItem(
-        "votingVoters",
-        JSON.stringify(voters)
+  if (name === "grades") updateStats();
+  if (name === "preview") refreshPreview();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".navbtn").forEach(button => {
+  button.addEventListener("click", () => {
+    goSection(button.dataset.section);
+  });
+});
+
+function getOptionCount() {
+  return Math.max(
+    2,
+    Math.min(5, Number($("optionCount").value) || 4)
+  );
+}
+
+function addQuestion(type = "choice", data = {}) {
+  const list = $("questionList");
+  const id = ++questionCounter;
+  const div = document.createElement("div");
+
+  div.className = "q-editor";
+  div.dataset.qid = id;
+  div.dataset.type = type;
+
+  div.innerHTML = `
+    <div class="q-top">
+      <span class="q-num">${list.children.length + 1}</span>
+      <strong>Pyetja ${list.children.length + 1}</strong>
+      <button class="secondary small" type="button"
+        onclick="moveQuestion(this,-1)">↑</button>
+      <button class="secondary small" type="button"
+        onclick="moveQuestion(this,1)">↓</button>
+      <button class="red small" type="button"
+        onclick="deleteQuestion(this)">Fshi</button>
+    </div>
+
+    <div class="q-body">
+      <div class="grid">
+        <div class="field full">
+          <label>Teksti i pyetjes</label>
+          <textarea class="q-text"
+            placeholder="Shkruaj pyetjen këtu...">${escapeHTML(data.text || "")}</textarea>
+        </div>
+
+        <div class="field">
+          <label>Lloji i pyetjes</label>
+          <select class="q-type">
+            <option value="choice">Me alternativa</option>
+            <option value="open">Përgjigje e hapur</option>
+            <option value="blank">Plotëso boshllëkun</option>
+            <option value="tf">E vërtetë / E gabuar</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Pikët</label>
+          <input class="q-points" type="number"
+            min="0" step="0.5" value="${Number(data.points ?? 1)}">
+        </div>
+
+        <div class="field full">
+          <label>Alternativat e përgjigjes</label>
+          <div class="q-options"></div>
+          <p class="hint q-options-hint"></p>
+        </div>
+
+        <div class="field full">
+          <label>Çelësi i përgjigjes (për mësimdhënësin)</label>
+          <input class="q-answer"
+            placeholder="P.sh. A ose përgjigjja e saktë"
+            value="${escapeHTML(data.answer || "")}">
+        </div>
+
+        <div class="field full">
+          <label>Shënime për mësimdhënësin (opsionale)</label>
+          <textarea class="q-notes"
+            placeholder="Shënime që nuk paraqiten në test...">${escapeHTML(data.notes || "")}</textarea>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="row">
+        <button type="button" class="secondary small"
+          onclick="chooseQuestionPhoto(this)">🖼️ Zgjidh fotografi</button>
+
+        <button type="button" class="secondary small"
+          onclick="cameraForQuestion(this)">📸 Kamera live</button>
+
+        <input class="q-file" type="file"
+          accept="image/*" multiple hidden>
+
+        <div class="q-pics"></div>
+      </div>
+    </div>
+  `;
+
+  list.appendChild(div);
+
+  const typeSelect = div.querySelector(".q-type");
+  typeSelect.value = type;
+
+  typeSelect.addEventListener("change", () => {
+    div.dataset.type = typeSelect.value;
+    renderQuestionOptions(div, []);
+    updateStats();
+  });
+
+  const fileInput = div.querySelector(".q-file");
+  fileInput.addEventListener("change", async event => {
+    const files = Array.from(event.target.files || []);
+    for (const file of files) {
+      if (!file.type.startsWith("image/")) continue;
+      const dataURL = await readFileAsDataURL(file);
+      addQuestionPhoto(div, dataURL, file.name);
+    }
+    fileInput.value = "";
+    updateStats();
+  });
+
+  renderQuestionOptions(div, data.options || []);
+
+  (data.photos || []).forEach(photo => {
+    if (typeof photo === "string") {
+      addQuestionPhoto(div, photo, "Fotografi");
+    }
+  });
+
+  renumberQuestions();
+  updateStats();
+  return div;
+}
+
+function renderQuestionOptions(card, existing = []) {
+  const type = card.querySelector(".q-type").value;
+  const container = card.querySelector(".q-options");
+  const hint = card.querySelector(".q-options-hint");
+
+  container.innerHTML = "";
+
+  if (type === "choice") {
+    const count = getOptionCount();
+
+    for (let i = 0; i < count; i++) {
+      const option = document.createElement("div");
+      option.className = "option-input";
+
+      option.innerHTML = `
+        <b>${letters[i]}</b>
+        <input class="q-option" data-letter="${letters[i]}"
+          placeholder="Alternativa ${letters[i]}">
+      `;
+
+      option.querySelector("input").value = existing[i] || "";
+      container.appendChild(option);
+    }
+
+    hint.textContent =
+      "Numrin e alternativave mund ta ndryshosh te Të dhënat.";
+  } else if (type === "tf") {
+    container.innerHTML = `
+      <div class="toggle-row">
+        <span>E vërtetë / E gabuar</span>
+      </div>
+    `;
+    hint.textContent =
+      "Shkruaj te çelësi i përgjigjes: E vërtetë ose E gabuar.";
+  } else if (type === "blank") {
+    hint.textContent =
+      "Nxënësi plotëson fjalën ose përgjigjen që mungon.";
+  } else {
+    hint.textContent =
+      "Nxënësi e shkruan përgjigjen në hapësirën e caktuar.";
+  }
+}
+
+function renumberQuestions() {
+  document.querySelectorAll("#questionList .q-editor")
+    .forEach((card, index) => {
+      card.querySelector(".q-num").textContent = index + 1;
+      card.querySelector(".q-top strong").textContent =
+        "Pyetja " + (index + 1);
+    });
+}
+
+function moveQuestion(button, direction) {
+  const card = button.closest(".q-editor");
+  const list = $("questionList");
+
+  if (direction < 0 && card.previousElementSibling) {
+    list.insertBefore(card, card.previousElementSibling);
+  } else if (direction > 0 && card.nextElementSibling) {
+    list.insertBefore(card.nextElementSibling, card);
+  }
+
+  renumberQuestions();
+  updateStats();
+}
+
+function deleteQuestion(button) {
+  const card = button.closest(".q-editor");
+  if (!confirm("A dëshiron ta fshish këtë pyetje?")) return;
+
+  card.remove();
+  renumberQuestions();
+  updateStats();
+}
+
+function collectQuestion(card) {
+  return {
+    type: card.querySelector(".q-type").value,
+    text: card.querySelector(".q-text").value,
+    points: Math.max(
+      0,
+      Number(card.querySelector(".q-points").value) || 0
+    ),
+    options: Array.from(
+      card.querySelectorAll(".q-option")
+    ).map(input => input.value),
+    answer: card.querySelector(".q-answer").value,
+    notes: card.querySelector(".q-notes").value,
+    photos: Array.from(
+      card.querySelectorAll(".q-pics img")
+    ).map(img => img.src)
+  };
+}
+
+function getQuestions() {
+  return Array.from(
+    document.querySelectorAll("#questionList .q-editor")
+  ).map(collectQuestion);
+}
+
+function updateStats() {
+  const questions = getQuestions();
+  const points = questions.reduce((sum, q) => sum + q.points, 0);
+
+  const questionPhotos = document.querySelectorAll(
+    "#questionList .q-pics img"
+  ).length;
+
+  $("statQuestions").textContent = questions.length;
+  $("statPoints").textContent = points;
+  $("statPhotos").textContent =
+    generalPhotos.length + questionPhotos;
+
+  $("gradeQuestions").textContent = questions.length;
+  $("gradeTotal").textContent = points;
+
+  $("earnedPoints").max = points;
+}
+
+function generateQuestions() {
+  const examples = [
+    {
+      type: "choice",
+      text: "Cila është përgjigjja e saktë për këtë pyetje?",
+      options: [
+        "Alternativa e parë",
+        "Alternativa e dytë",
+        "Alternativa e tretë",
+        "Alternativa e katërt",
+        "Alternativa e pestë"
+      ],
+      answer: "A",
+      points: 1
+    },
+    {
+      type: "open",
+      text: "Shpjego me fjalët e tua temën e mësuar.",
+      answer: "",
+      points: 3
+    },
+    {
+      type: "blank",
+      text: "Plotëso fjalinë: Përgjigjja e saktë është ____.",
+      answer: "",
+      points: 1
+    },
+    {
+      type: "tf",
+      text: "Lexo pohimin dhe përcakto nëse është i vërtetë apo i gabuar.",
+      answer: "E vërtetë",
+      points: 1
+    },
+    {
+      type: "choice",
+      text: "Cili pohim lidhet me temën e trajtuar?",
+      options: [
+        "Pohimi A",
+        "Pohimi B",
+        "Pohimi C",
+        "Pohimi D",
+        "Pohimi E"
+      ],
+      answer: "",
+      points: 2
+    }
+  ];
+
+  if (
+    $("questionList").children.length &&
+    !confirm("Të shtohen pyetje shembull në listën ekzistuese?")
+  ) return;
+
+  examples.forEach(q => addQuestion(q.type, q));
+  toast("U shtuan pyetjet shembull. Ndryshoji sipas lëndës.");
+}
+
+function addQuestionPhoto(card, src, name = "Fotografi") {
+  const container = card.querySelector(".q-pics");
+  const wrapper = document.createElement("div");
+  wrapper.className = "thumb";
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = name;
+
+  const caption = document.createElement("small");
+  caption.textContent = name;
+
+  const remove = document.createElement("button");
+  remove.className = "red small";
+  remove.textContent = "Fshi";
+  remove.type = "button";
+  remove.onclick = () => {
+    wrapper.remove();
+    updateStats();
+  };
+
+  wrapper.append(img, caption, remove);
+  container.appendChild(wrapper);
+}
+
+function addGeneralPhoto(src, name = "Fotografi") {
+  const wrapper = document.createElement("div");
+  wrapper.className = "thumb";
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = name;
+
+  const caption = document.createElement("small");
+  caption.textContent = name;
+
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "red small";
+  remove.textContent = "Fshi";
+
+  remove.onclick = () => {
+    generalPhotos = generalPhotos.filter(photo => photo.id !== id);
+    wrapper.remove();
+    updateStats();
+  };
+
+  const id = crypto.randomUUID
+    ? crypto.randomUUID()
+    : String(Date.now()) + Math.random();
+
+  generalPhotos.push({ id, src, name });
+  wrapper.append(img, caption, remove);
+  $("generalPhotos").appendChild(wrapper);
+
+  updateStats();
+}
+
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+$("generalPhotoInput").addEventListener("change", async event => {
+  for (const file of Array.from(event.target.files || [])) {
+    if (!file.type.startsWith("image/")) continue;
+    try {
+      const dataURL = await readFileAsDataURL(file);
+      addGeneralPhoto(dataURL, file.name);
+    } catch {
+      toast("Fotografia nuk mund të lexohet.");
+    }
+  }
+
+  event.target.value = "";
+});
+
+function chooseQuestionPhoto(button) {
+  button.parentElement.querySelector(".q-file").click();
+}
+
+function cameraForQuestion(button) {
+  cameraTarget = {
+    type: "question",
+    card: button.closest(".q-editor")
+  };
+  openCamera();
+}
+
+async function openCamera() {
+  $("cameraModal").classList.add("open");
+  $("cameraStatus").textContent = "Duke hapur kamerën...";
+
+  if (!navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia) {
+    $("cameraStatus").textContent =
+      "Kamera live nuk mbështetet këtu. Hape faqen përmes HTTPS në GitHub Pages ose localhost.";
+    return;
+  }
+
+  try {
+    await stopCamera();
+
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: cameraFacing
+      },
+      audio: false
+    });
+
+    $("cameraVideo").srcObject = cameraStream;
+    $("cameraStatus").textContent =
+      "Kamera është aktive. Shtyp “Bëj fotografinë” për të kapur imazhin.";
+  } catch (error) {
+    let message = "Nuk mund të hapet kamera.";
+
+    if (error.name === "NotAllowedError") {
+      message = "Lejo përdorimin e kamerës në shfletues.";
+    } else if (error.name === "NotFoundError") {
+      message = "Nuk u gjet kamerë në pajisje.";
+    } else if (error.name === "NotReadableError") {
+      message = "Kamera mund të jetë duke u përdorur nga një aplikacion tjetër.";
+    }
+
+    $("cameraStatus").textContent = message;
+  }
+}
+
+async function stopCamera() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraStream = null;
+  }
+
+  $("cameraVideo").srcObject = null;
+}
+
+async function closeCamera() {
+  await stopCamera();
+  $("cameraModal").classList.remove("open");
+  cameraTarget = null;
+}
+
+async function switchCamera() {
+  cameraFacing =
+    cameraFacing === "environment" ? "user" : "environment";
+  await openCamera();
+}
+
+function captureLivePhoto() {
+  const video = $("cameraVideo");
+
+  if (!cameraStream ||
+      !video.videoWidth ||
+      !video.videoHeight) {
+    toast("Prit derisa kamera të jetë gati.");
+    return;
+  }
+
+  const canvas = $("cameraCanvas");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const context = canvas.getContext("2d");
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const imageData = canvas.toDataURL("image/jpeg", 0.88);
+
+  if (cameraTarget && cameraTarget.type === "question") {
+    addQuestionPhoto(
+      cameraTarget.card,
+      imageData,
+      "Foto nga kamera"
     );
+  } else {
+    addGeneralPhoto(imageData, "Foto nga kamera");
+  }
 
-    localStorage.setItem(
-        "votingVotes",
-        JSON.stringify(votes)
-    );
-
+  updateStats();
+  toast("Fotografia u shtua me sukses.");
+  closeCamera();
 }
 
+function collectProject() {
+  const fields = [
+    "testTitle",
+    "subject",
+    "className",
+    "school",
+    "teacher",
+    "testDate",
+    "duration",
+    "testKind",
+    "difficulty",
+    "layoutType",
+    "optionCount",
+    "questionCount",
+    "topics",
+    "instructions",
+    "finalTest",
+    "grade2",
+    "grade3",
+    "grade4",
+    "grade5"
+  ];
 
-function loadData(){
+  const data = {};
 
-    const e =
-        localStorage.getItem("votingElection");
+  fields.forEach(id => {
+    const element = $(id);
+    data[id] = element.type === "checkbox"
+      ? element.checked
+      : element.value;
+  });
 
-    const v =
-        localStorage.getItem("votingVoters");
+  data.questions = getQuestions();
 
-    const vo =
-        localStorage.getItem("votingVotes");
+  data.generalPhotos = generalPhotos.map(photo => ({
+    src: photo.src,
+    name: photo.name
+  }));
 
-
-    if(e)
-        election=JSON.parse(e);
-
-    if(v)
-        voters=JSON.parse(v);
-
-    if(vo)
-        votes=JSON.parse(vo);
-
-
-    updateScreen();
-
+  return data;
 }
 
+function downloadFile(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
-/* =========================
-   KRIJO VOTIMIN
-========================= */
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 
-function createElection(){
-
-    const title =
-        document.getElementById(
-            "electionTitle"
-        ).value.trim();
-
-
-    const names =
-        document.getElementById(
-            "candidateInput"
-        ).value
-        .split("\n")
-        .map(x=>x.trim())
-        .filter(x=>x);
-
-
-    if(!title){
-
-        alert("Vendos titullin.");
-
-        return;
-
-    }
-
-
-    if(names.length < 2){
-
-        alert(
-            "Duhet të ketë të paktën 2 kandidatë."
-        );
-
-        return;
-
-    }
-
-
-    election = {
-
-        title:title,
-
-        active:false,
-
-        candidates:names.map(
-            name=>({
-
-                id:crypto.randomUUID(),
-
-                name:name
-
-            })
-        )
-
-    };
-
-
-    voters={};
-
-    votes={};
-
-
-    saveData();
-
-    updateScreen();
-
-
-    alert(
-        "Votimi u krijua me sukses."
-    );
-
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
 }
 
-
-/* =========================
-   HAP
-========================= */
-
-function openElection(){
-
-    if(election.candidates.length<2){
-
-        alert(
-            "Krijo fillimisht votimin."
-        );
-
-        return;
-
-    }
-
-
-    election.active=true;
-
-    saveData();
-
-    updateScreen();
-
+function saveProject() {
+  try {
+    const json = JSON.stringify(collectProject(), null, 2);
+    downloadFile("test-ing-projekti.json", json, "application/json");
+    toast("Projekti u përgatit për ruajtje.");
+  } catch {
+    toast("Projekti është shumë i madh për t'u ruajtur. Provo me më pak fotografi.");
+  }
 }
 
+function loadProject(data) {
+  const fields = [
+    "testTitle",
+    "subject",
+    "className",
+    "school",
+    "teacher",
+    "testDate",
+    "duration",
+    "testKind",
+    "difficulty",
+    "layoutType",
+    "optionCount",
+    "questionCount",
+    "topics",
+    "instructions",
+    "grade2",
+    "grade3",
+    "grade4",
+    "grade5"
+  ];
 
-/* =========================
-   MBYLL
-========================= */
+  fields.forEach(id => {
+    if (data[id] !== undefined) $(id).value = data[id];
+  });
 
-function closeElection(){
+  $("finalTest").checked = Boolean(data.finalTest);
 
-    election.active=false;
+  $("questionList").innerHTML = "";
+  questionCounter = 0;
 
-    saveData();
+  (data.questions || []).forEach(question => {
+    addQuestion(question.type || "choice", question);
+  });
 
-    updateScreen();
+  generalPhotos = [];
+  $("generalPhotos").innerHTML = "";
 
+  (data.generalPhotos || []).forEach(photo => {
+    if (photo.src) addGeneralPhoto(photo.src, photo.name || "Fotografi");
+  });
+
+  renumberQuestions();
+  updateStats();
+  toast("Projekti u hap.");
 }
 
+$("openProject").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  if (!file) return;
 
-/* =========================
-   QR
-========================= */
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    loadProject(data);
+  } catch {
+    toast("Skedari nuk është projekt i vlefshëm JSON.");
+  }
 
-function generateQRs(){
+  event.target.value = "";
+});
 
-    if(election.candidates.length<2){
-
-        alert(
-            "Krijo votimin fillimisht."
-        );
-
-        return;
-
-    }
-
-
-    const count =
-        Number(
-            document.getElementById(
-                "qrCount"
-            ).value
-        );
-
-
-    if(count<1 || count>100){
-
-        alert(
-            "Numri duhet të jetë 1 deri 100."
-        );
-
-        return;
-
-    }
-
-
-    voters={};
-
-
-    const container =
-        document.getElementById(
-            "qrContainer"
-        );
-
-    container.innerHTML="";
-
-
-    for(let i=1;i<=count;i++){
-
-        const token =
-            crypto.randomUUID()
-            .replaceAll("-","");
-
-
-        voters[token]={
-
-            number:i,
-
-            used:false
-
-        };
-
-
-        const box =
-            document.createElement(
-                "div"
-            );
-
-        box.className="qrBox";
-
-
-        const label =
-            document.createElement(
-                "b"
-            );
-
-        label.innerText =
-            "Votuesi "+i;
-
-
-        const qr =
-            document.createElement(
-                "div"
-            );
-
-
-        box.appendChild(label);
-
-        box.appendChild(qr);
-
-        container.appendChild(box);
-
-
-        /*
-        Në prototipin lokal QR
-        hap faqen e votimit me token.
-        */
-
-        const url =
-            location.href
-            .split("?")[0]
-            +
-            "?vote="
-            +
-            token;
-
-
-        new QRCode(qr,{
-
-            text:url,
-
-            width:140,
-
-            height:140
-
-        });
-
-    }
-
-
-    saveData();
-
-    updateScreen();
-
-
-    alert(
-        count+
-        " QR u krijuan."
-    );
-
+function getExamTitle() {
+  return $("testTitle").value.trim() || "Test";
 }
 
+function getExamHeader() {
+  const title = escapeHTML(getExamTitle());
+  const school = escapeHTML($("school").value || "Shkolla: __________________");
+  const subject = escapeHTML($("subject").value || "__________________");
+  const className = escapeHTML($("className").value || "________");
+  const teacher = escapeHTML($("teacher").value || "__________________");
+  const date = escapeHTML($("testDate").value || "__________________");
+  const duration = escapeHTML($("duration").value || "45 minuta");
+  const kind = escapeHTML($("testKind").value || "Test");
 
-/* =========================
-   VOTIMI
-========================= */
+  return `
+    <div class="exam-head">
+      <h1>${school}</h1>
+      <h2>${title}</h2>
+      <div>${kind}</div>
 
-function openVote(token){
-
-    if(!election.active){
-
-        alert(
-            "Votimi është i mbyllur."
-        );
-
-        return;
-
-    }
-
-
-    if(!voters[token]){
-
-        alert(
-            "QR nuk është i vlefshëm."
-        );
-
-        return;
-
-    }
-
-
-    if(voters[token].used){
-
-        alert(
-            "Ky QR është përdorur më parë."
-        );
-
-        return;
-
-    }
-
-
-    document
-        .getElementById(
-            "adminPanel"
-        )
-        .classList
-        .add("hidden");
-
-
-    document
-        .getElementById(
-            "votePage"
-        )
-        .classList
-        .remove("hidden");
-
-
-    document
-        .getElementById(
-            "voteTitle"
-        )
-        .innerText =
-        election.title;
-
-
-    const area =
-        document.getElementById(
-            "candidateButtons"
-        );
-
-
-    area.innerHTML="";
-
-
-    document
-        .getElementById(
-            "voteMessage"
-        )
-        .innerText =
-        "Zgjidh një kandidat:";
-
-
-    election.candidates
-        .forEach(candidate=>{
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.className =
-                "voteButton";
-
-
-            button.innerText =
-                candidate.name;
-
-
-            button.onclick =
-                ()=>confirmVote(
-                    token,
-                    candidate.id
-                );
-
-
-            area.appendChild(
-                button
-            );
-
-        });
-
+      <div class="exam-meta">
+        <div>Lënda: ${subject}</div>
+        <div>Klasa: ${className}</div>
+        <div>Mësimdhënësi: ${teacher}</div>
+        <div>Data: ${date}</div>
+        <div>Kohëzgjatja: ${duration}</div>
+        <div>Emri i nxënësit: __________________</div>
+      </div>
+    </div>
+  `;
 }
 
+function printQuestion(q, index) {
+  const title = `
+    <div class="print-question-title">
+      ${index + 1}. ${escapeHTML(q.text)}
+      <span class="points">${q.points} pikë</span>
+    </div>
+  `;
 
-/* =========================
-   KONFIRMO
-========================= */
+  const photos = (q.photos || []).map(src =>
+    `<img class="print-image" src="${src}" alt="Fotografi e pyetjes">`
+  ).join("");
 
-function confirmVote(
-    token,
-    candidateId
-){
+  let body = "";
 
-    const candidate =
-        election.candidates
-        .find(
-            x=>x.id===candidateId
-        );
+  if (q.type === "choice") {
+    body = `
+      <div class="print-options">
+        ${(q.options || []).map((option, i) =>
+          `<div>${letters[i]}. ${escapeHTML(option || "________")}</div>`
+        ).join("")}
+      </div>
+    `;
+  } else if (q.type === "tf") {
+    body = `<div style="margin:8px 0 0 15px">□ E vërtetë &nbsp;&nbsp;&nbsp; □ E gabuar</div>`;
+  } else if (q.type === "blank") {
+    body = `<div class="answer-lines short"></div>`;
+  } else {
+    body = `<div class="answer-lines"></div>`;
+  }
 
-
-    if(!candidate)
-        return;
-
-
-    const yes =
-        confirm(
-            "A dëshiron ta votosh:\n\n"+
-            candidate.name+
-            "\n\nVota nuk mund të ndryshohet."
-        );
-
-
-    if(!yes)
-        return;
-
-
-    voters[token].used=true;
-
-
-    votes[token]=candidateId;
-
-
-    saveData();
-
-
-    document
-        .getElementById(
-            "candidateButtons"
-        )
-        .innerHTML="";
-
-
-    document
-        .getElementById(
-            "voteMessage"
-        )
-        .className=
-        "success";
-
-
-    document
-        .getElementById(
-            "voteMessage"
-        )
-        .innerText=
-        "✓ Vota u regjistrua me sukses.";
-
-
-    setTimeout(()=>{
-
-        document
-            .getElementById(
-                "votePage"
-            )
-            .classList
-            .add("hidden");
-
-
-        document
-            .getElementById(
-                "adminPanel"
-            )
-            .classList
-            .remove("hidden");
-
-
-        updateScreen();
-
-    },1500);
-
+  return `
+    <div class="print-question">
+      ${title}
+      ${photos}
+      ${body}
+    </div>
+  `;
 }
 
+function buildMaturaAnswerSheet(questions) {
+  const choiceQuestions = questions
+    .map((q, index) => ({ q, index }))
+    .filter(item => item.q.type === "choice" || item.q.type === "tf");
 
-/* =========================
-   REZULTATET
-========================= */
+  return `
+    <div class="print-page">
+      ${getExamHeader()}
 
-function calculateResults(){
+      <h2 style="text-align:center">FLETË PËRGJIGJESH</h2>
 
-    const results={};
+      <p>
+        Shëno katrorin përkatës për secilën pyetje.
+        Për pyetjet me alternativa, përdor alternativën e zgjedhur.
+      </p>
 
+      <table class="bubble-table">
+        <thead>
+          <tr>
+            <th>Nr.</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+          </tr>
+        </thead>
 
-    election.candidates
-        .forEach(c=>{
+        <tbody>
+          ${choiceQuestions.map(item => {
+            const q = item.q;
+            const count = q.type === "tf"
+              ? 2
+              : Math.min(getOptionCount(), q.options.length || getOptionCount());
 
-            results[c.id]=0;
-
-        });
-
-
-    Object.values(votes)
-        .forEach(candidateId=>{
-
-            if(
-                results[candidateId]
-                !==undefined
-            ){
-
-                results[candidateId]++;
-
-            }
-
-        });
-
-
-    return results;
-
-}
-
-
-/* =========================
-   EKRANI
-========================= */
-
-function updateScreen(){
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-
-    if(election.active){
-
-        status.innerHTML=
-        `<span class="open">
-        🟢 VOTIMI ËSHTË I HAPUR
-        </span>`;
-
-    }else{
-
-        status.innerHTML=
-        `<span class="closed">
-        🔴 VOTIMI ËSHTË I MBYLLUR
-        </span>`;
-
-    }
-
-
-    const results =
-        calculateResults();
-
-
-    const total =
-        Object.values(results)
-        .reduce(
-            (a,b)=>a+b,
-            0
-        );
-
-
-    document
-        .getElementById(
-            "totalVotes"
-        )
-        .innerText=total;
-
-
-    const area =
-        document.getElementById(
-            "results"
-        );
-
-
-    if(!election.candidates.length){
-
-        area.innerText=
-        "Nuk ka rezultate.";
-
-        return;
-
-    }
-
-
-    const max =
-        Math.max(
-            1,
-            ...Object.values(results)
-        );
-
-
-    area.innerHTML="";
-
-
-    election.candidates
-        .forEach(c=>{
-
-            const number =
-                results[c.id]||0;
-
-
-            const percent =
-                total===0
-                ?0
-                :(number/total)*100;
-
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-
-            div.className=
-                "result";
-
-
-            div.innerHTML=`
-
-                <b>
-                    ${c.name}
-                </b>
-
-                <span style="float:right">
-                    ${number} vota
-                    (${percent.toFixed(1)}%)
-                </span>
-
-                <div
-                class="bar"
-                style="
-                width:${(number/max)*100}%;
-                ">
-                </div>
-
+            return `
+              <tr>
+                <td>${item.index + 1}</td>
+                ${[1, 2, 3, 4, 5].map(n => `
+                  <td>
+                    ${n <= count
+                      ? `<span class="square-choice">${n}</span>`
+                      : ""}
+                  </td>
+                `).join("")}
+              </tr>
             `;
+          }).join("")}
+        </tbody>
+      </table>
 
-
-            area.appendChild(div);
-
-        });
-
-
-    updateVoterTable();
-
+      <p style="margin-top:15px;font-size:10pt">
+        Pyetjet me përgjigje të hapura plotësohen në hapësirat përkatëse të testit.
+      </p>
+    </div>
+  `;
 }
 
+function refreshPreview() {
+  const questions = getQuestions();
 
-/* =========================
-   TABELA
-========================= */
+  const html = `
+    ${getExamHeader()}
 
-function updateVoterTable(){
+    <div class="exam-instructions">
+      <strong>Udhëzime:</strong><br>
+      ${escapeHTML($("instructions").value || "Lexoni me kujdes pyetjet.")}
+    </div>
 
-    const table =
-        document.getElementById(
-            "voterTable"
-        );
+    ${questions.map(printQuestion).join("")}
 
+    <hr>
+    <p><strong>Pikët maksimale:</strong>
+      ${questions.reduce((sum, q) => sum + q.points, 0)}
+    </p>
+  `;
 
-    table.innerHTML="";
-
-
-    const entries =
-        Object.entries(
-            voters
-        );
-
-
-    entries.forEach(
-        ([token,data])=>{
-
-            const tr =
-                document.createElement(
-                    "tr"
-                );
-
-
-            tr.innerHTML=`
-
-                <td>
-                    ${data.number}
-                </td>
-
-                <td>
-                    ${token.substring(0,8)}...
-                </td>
-
-                <td>
-                    ${
-                    data.used
-                    ?"✅ E përdorur"
-                    :"🟢 E lirë"
-                    }
-                </td>
-
-            `;
-
-
-            table.appendChild(tr);
-
-        }
-    );
-
+  $("previewContent").innerHTML = html;
+  toast("Pamja e testit u përditësua.");
 }
 
+function printTest() {
+  const questions = getQuestions();
 
-/* =========================
-   QR NGA URL
-========================= */
+  if (!questions.length) {
+    toast("Shto së paku një pyetje para printimit.");
+    goSection("questions");
+    return;
+  }
 
-function checkQR(){
+  const instructions = `
+    <div class="exam-instructions">
+      <strong>Udhëzime:</strong><br>
+      ${escapeHTML($("instructions").value || "Lexoni me kujdes pyetjet.")}
+    </div>
+  `;
 
-    const params =
-        new URLSearchParams(
-            location.search
-        );
+  const questionPages = `
+    <div class="print-page">
+      ${getExamHeader()}
+      ${instructions}
+      ${questions.map(printQuestion).join("")}
+      <hr>
+      <p><strong>Pikët maksimale:</strong>
+        ${questions.reduce((sum, q) => sum + q.points, 0)}
+      </p>
+    </div>
+  `;
 
+  let output = "";
 
-    const token =
-        params.get("vote");
+  if ($("layoutType").value === "matura") {
+    output = buildMaturaAnswerSheet(questions) + questionPages;
+  } else {
+    output = questionPages;
+  }
 
+  $("printRoot").innerHTML = output;
+  window.print();
+}
 
-    if(token){
+function calculateGrade() {
+  const questions = getQuestions();
+  const total = questions.reduce((sum, q) => sum + q.points, 0);
+  const earned = Number($("earnedPoints").value) || 0;
 
-        openVote(token);
+  if (total <= 0) {
+    toast("Shto pyetje dhe pikë para llogaritjes.");
+    return;
+  }
 
+  if (earned < 0 || earned > total) {
+    toast("Pikët duhet të jenë ndërmjet 0 dhe " + total + ".");
+    return;
+  }
+
+  const percent = (earned / total) * 100;
+
+  const thresholds = {
+    2: Number($("grade2").value),
+    3: Number($("grade3").value),
+    4: Number($("grade4").value),
+    5: Number($("grade5").value)
+  };
+
+  if (
+    thresholds[2] < 0 ||
+    thresholds[3] < thresholds[2] ||
+    thresholds[4] < thresholds[3] ||
+    thresholds[5] < thresholds[4] ||
+    thresholds[5] > 100
+  ) {
+    toast("Kontrollo pragjet e notave. Duhet të jenë në rend rritës.");
+    return;
+  }
+
+  let grade = 1;
+
+  if (percent >= thresholds[2]) grade = 2;
+  if (percent >= thresholds[3]) grade = 3;
+  if (percent >= thresholds[4]) grade = 4;
+  if (percent >= thresholds[5]) grade = 5;
+
+  $("gradeEarned").textContent = earned;
+  $("gradeResult").textContent = grade;
+  $("gradeCalculation").textContent = "Nota " + grade;
+  $("gradePercent").textContent = percent.toFixed(1) + "% e pikëve";
+}
+
+function generateQR() {
+  const input = $("shareUrl").value.trim();
+  const area = $("qrArea");
+
+  area.innerHTML = "";
+
+  let url;
+
+  try {
+    url = new URL(input);
+  } catch {
+    toast("Shkruaj një adresë të vlefshme të faqes.");
+    return;
+  }
+
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    toast("Adresa duhet të fillojë me HTTPS ose HTTP.");
+    return;
+  }
+
+  const image = document.createElement("img");
+  image.alt = "QR i faqes test.ing";
+  image.width = 230;
+  image.height = 230;
+  image.style.maxWidth = "100%";
+  image.style.border = "1px solid #dbe3ee";
+  image.style.padding = "8px";
+  image.style.borderRadius = "12px";
+
+  const qrURL =
+    "https://api.qrserver.com/v1/create-qr-code/?size=230x230&data=" +
+    encodeURIComponent(url.href);
+
+  image.src = qrURL;
+
+  image.onerror = () => {
+    area.textContent = "QR-ja nuk mund të ngarkohet. Kontrollo lidhjen me internetin.";
+  };
+
+  const caption = document.createElement("p");
+  caption.textContent = url.href;
+  caption.style.overflowWrap = "anywhere";
+
+  area.append(image, caption);
+  toast("QR-ja u krijua. Nevojitet internet për ta ngarkuar.");
+}
+
+async function copyShareUrl() {
+  const url = $("shareUrl").value.trim();
+
+  if (!url) {
+    toast("Së pari shkruaj adresën e faqes.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(url);
+    toast("Adresa u kopjua.");
+  } catch {
+    $("shareUrl").select();
+    toast("Përzgjidhe adresën dhe kopjoje manualisht.");
+  }
+}
+
+function exportText() {
+  const questions = getQuestions();
+
+  let text = [
+    getExamTitle(),
+    "Shkolla: " + $("school").value,
+    "Lënda: " + $("subject").value,
+    "Klasa: " + $("className").value,
+    "Mësimdhënësi: " + $("teacher").value,
+    "Data: " + $("testDate").value,
+    "Kohëzgjatja: " + $("duration").value,
+    "",
+    "Udhëzime:",
+    $("instructions").value,
+    "",
+    "PYETJET",
+    ""
+  ].join("\n");
+
+  questions.forEach((q, index) => {
+    text += `${index + 1}. ${q.text} (${q.points} pikë)\n`;
+
+    if (q.type === "choice") {
+      q.options.forEach((option, i) => {
+        text += `   ${letters[i]}. ${option}\n`;
+      });
     }
 
+    if (q.type === "tf") {
+      text += "   E vërtetë / E gabuar\n";
+    }
+
+    text += "\n";
+  });
+
+  downloadFile("test-ing.txt", text, "text/plain;charset=utf-8");
+  toast("Teksti i testit u eksportua.");
 }
 
+/* Përditësimi i statistikave dhe i pamjes kur ndryshojnë të dhënat. */
+[
+  "optionCount",
+  "testTitle",
+  "subject",
+  "className",
+  "school",
+  "teacher",
+  "testDate",
+  "duration",
+  "testKind",
+  "difficulty",
+  "layoutType",
+  "instructions"
+].forEach(id => {
+  $(id).addEventListener("change", () => {
+    if (id === "optionCount") {
+      document.querySelectorAll("#questionList .q-editor")
+        .forEach(card => {
+          if (card.querySelector(".q-type").value === "choice") {
+            const oldOptions = Array.from(
+              card.querySelectorAll(".q-option")
+            ).map(input => input.value);
 
-/* =========================
-   START
-========================= */
+            renderQuestionOptions(card, oldOptions);
+          }
+        });
+    }
 
-loadData();
+    updateStats();
+  });
+});
 
-checkQR();
+$("earnedPoints").addEventListener("input", () => {
+  const total = getQuestions().reduce((sum, q) => sum + q.points, 0);
+  $("gradeEarned").textContent = $("earnedPoints").value || "0";
+  $("gradeTotal").textContent = total;
+});
 
+$("cameraModal").addEventListener("click", event => {
+  if (event.target === $("cameraModal")) closeCamera();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeCamera();
+});
+
+/* Nisja fillestare e aplikacionit. */
+(function init() {
+  $("testDate").value = new Date().toISOString().slice(0, 10);
+
+  const initialCount = Math.max(
+    1,
+    Math.min(100, Number($("questionCount").value) || 5)
+  );
+
+  for (let i = 0; i < initialCount; i++) {
+    addQuestion("choice");
+  }
+
+  updateStats();
+})();
 </script>
 
 </body>
